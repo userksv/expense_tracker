@@ -30,7 +30,23 @@ class RecordsData():
         record = Record(date, category, amount, description).to_dict()
         # Safe to the file
         self.__file_handler.write_to_file(record)
+    
+    def get_balance(self, balance_type: str):
+        '''Возвращает баланс в зависимосит от выбранного типа баланса'''
+        json_data = self.__file_handler.read_file()
+        records = json_data['records']
 
+        if balance_type == 'total_expenses':
+            return abs(sum([record['amount'] for record in records if record['category'] == 'Расход']))
+        elif balance_type == 'total_income':
+            return sum([record['amount'] for record in records if record['category'] == 'Доход'])
+        else:
+            return sum([record['amount'] for record in records])
+
+# r = RecordsData()
+# print(r.get_balance('total_expenses'))
+# print(r.get_balance('total_income'))
+# print(r.get_balance('total'))
 
 
 
@@ -40,16 +56,32 @@ class MainApp():
         self.records = RecordsData()
 
     def help(self):
+        print()
         print('1. Текущий баланс')
         print('2. Добавить запись')
         print('3. Редактировать запись')
         print('4. Поиск')
         print('0. Выход')
     
-    def print_current_balance():
+    def print_balance(self):
+        print()
         print('1. Общий баланс')
         print('2. Расходы')
         print('3. Доходы')
+        command = input('Выберите комманду: ')
+        if command == '1':
+            balance_type = 'total'
+            output = 'Общий баланс'
+        elif command == '2':
+            balance_type = 'total_expenses'
+            output = 'Общие расходы'
+        elif command == '3':
+            balance_type = 'total_income'
+            output = 'Общие доходы'
+        else:
+            self.help()
+            return
+        print(f'{output} - {self.records.get_balance(balance_type)}')
     
     def add_record(self):
         date = input('Введите дату(Год-Месяц-День): ')
@@ -69,13 +101,14 @@ class MainApp():
 
     def run(self):
         print('Добро пожаловать!')
-        print()
         self.help()
         while True:
             print()
             command = input('Выберите комманду: ')
             if command == '0':
                 break
+            elif command == '1':
+                self.print_balance()
             elif command == '2':
                 self.add_record()
             else:
