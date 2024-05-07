@@ -1,5 +1,5 @@
 class Record():
-    '''Model'''
+    '''Класс Модель'''
     def __init__(self, id: int, date: str, category: str, amount: int, description: str) -> None:
         self.__id = id
         self.__date = date
@@ -11,6 +11,7 @@ class Record():
         return f'{self.__date} - {self.__category} - {self.__amount} - {self.__description}'
     
     def to_dict(self):
+        '''Простой serializer to json'''
         return {
             'id': self.__id,
             'date': self.__date,

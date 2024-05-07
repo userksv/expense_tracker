@@ -1,10 +1,11 @@
 from controller import RecordsData
-
+from validators import Validator
 class MainApp():
     '''View'''
     def __init__(self) -> None:
         self.records = RecordsData()
         self.separator = '-' * 25
+        self.validator = Validator()
 
     def help(self):
         print('Главное меню')
@@ -41,37 +42,64 @@ class MainApp():
     def add_record(self):
         date = input('Введите дату(Год-Месяц-День): ')
         category = input('Введите категорию(Доход/Расход): ')
-        amount = int(input('Введите сумму(Целое число): '))
+        amount = input('Введите сумму(Целое число): ')
         description = input('Введите описание: ')
-        self.records.add_record(date, category, amount, description)
-        print('Запись добавлена.')
+        if self.validator.validate_data(date, amount, category):
+            self.records.add_record(date, category, int(amount), description)
+            print('Запись добавлена.')
+            print()
+        else:
+            self.print_errors(self.validator.errors())
+            return
+
+    def print_errors(self, errors: list):
+        print(self.separator)
+        print('Ошибки при вводе данных.')
+        print(self.separator)
+        for erroor in errors:
+            print(erroor)
         print()
 
     def get_all_records(self):
         return self.records.get_all_records()
     
     def print_records(self, records: list):
-        if records == None:
+        if not records:
             print('Нет записей.')
-        print('Найденые записи:')
-        print(self.separator)
-        for record in records:
-            print(f"Номер записи: {record['id']}\nДата: {record['date']}\nКатегория: {record['category']}\nСумма: {record['amount']}\nОписание: {record['description']}")
             print(self.separator)
+            return
+        else:
+            print('Найденые записи:')
+            print(self.separator)
+            for record in records:
+                print(f"Номер записи: {record['id']}\nДата: {record['date']}\nКатегория: {record['category']}\nСумма: {record['amount']}\nОписание: {record['description']}")
+                print(self.separator)
     
     def edit_record(self):
-        record_number = int(input('ВВедите номер записи для редактирования: '))
+        try:
+            record_number = int(input('Введите номер записи для редактирования: '))
+        except ValueError:
+            print('Номер должен быть целое число')
+            print(self.separator)
+            return
+        
         record = self.records.find_record_by_id(record_number)
         if not record:
             print('Запись не найдена')
+            print(self.separator)
         else:
             print('Изменение записи: ')
             date = input('Введите дату(Год-Месяц-День): ')
             category = input('Введите категорию(Доход/Расход): ')
-            amount = int(input('Введите сумму(Целое число): '))
+            amount = input('Введите сумму(Целое число): ')
             description = input('Введите описание: ')
-            self.records.edit_record(record, date, category, amount, description)
-            print('Изменения сохранены')
+            if self.validator.validate_data(date, amount, category):
+                self.records.edit_record(record, date, category, int(amount), description)
+                print('Изменения сохранены!')
+                print()
+            else:
+                self.print_errors(self.validator.errors())
+                return
 
     def search(self):
         print('1. Поиск по дате')
@@ -82,16 +110,26 @@ class MainApp():
         search_condition = ''
         if command == '1':
             search_condition = input('Введите дату записи(Год-Месяц-День): ')
+            valid = self.validator.validate_date(search_condition)
         elif command == '2':
             search_condition = input('Введите категорию(Доход/Расход): ')
+            valid = self.validator.validate_category(search_condition)
         elif command == '3':
-            search_condition = int(input('Введите сумму(Целое число): '))
-        return self.records.search_by(search_condition)
-        
+            search_condition = input('Введите сумму(Целое число): ')
+            if valid := self.validator.validate_number(search_condition):
+                search_condition = int(search_condition)
+        else: 
+            return
+        if valid:
+            self.print_records(self.records.search_by(search_condition))
+        else:
+            self.print_errors(self.validator.errors())
+
     def run(self):
         print('Добро пожаловать!')
         print(self.separator)
         while True:
+            self.validator.clear_errors()
             self.help()
             command = input('Выберите команду: ')
             print()
@@ -105,7 +143,7 @@ class MainApp():
             elif command == '3':
                 self.edit_record()
             elif command == '4':
-                self.print_records(self.search())
+                self.search()
             elif command == '5':
                 self.print_records(self.get_all_records())
             else:

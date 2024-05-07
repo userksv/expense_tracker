@@ -21,7 +21,7 @@ class FileHandler():
             json.dump(json_data, file, indent=2, ensure_ascii=False)
     
     def read_file(self):
-        '''Медот читает файл и выгружает данные в `list`.'''
+        '''Медот читает файл и выгружает данные в `list`'''
         with open(self.__filename, 'r') as file:
             json_data = json.load(file)
         return json_data
@@ -35,14 +35,4 @@ class FileHandler():
 if __name__ == '__main__':
     f = FileHandler('data.json')
     records = f.read_file()['records']
-    # filtered = list(filter(lambda record: record['category'] == 'Доход', records))
-    # print(sum([record['amount'] for record in filtered]))
-    # print({'amount': 3000} in records[0])
-    # print('Расход' in records[0].values())
-    # print(list(filter(lambda record: 'Расход' in record.values(), records)))
-    
-    # print(len(f.read_file()['records']))
-    # f.write_to_file({'date': '2024-05-03', 'category':'Расход','amount': 3000, 'description': 'Покупка продуктов'})
-    # f.write_to_file({'date': '2024-05-03', 'category':'Расход','amount': 234, 'description': 'Покупка продуктов'})
-    # f.write_to_file({'date': '2024-05-03', 'category':'Расход','amount': 500, 'description': 'Покупка продуктов'})
-    # # print(f.balance())
+   

@@ -2,16 +2,14 @@ from model import Record
 from file_handler import FileHandler
 
 class RecordsData():
-    '''Model controller'''
+    '''Класс `controller` для обработки данных из файла'''
     def __init__(self) -> None:
         self.__file_handler = FileHandler('data.json')
     
     def add_record(self, date: str, category: str, amount: int, description: str):
+        '''Метод создает новую запись'''
         id = len(self.__file_handler.read_file()['records']) + 1 # Создаем номер записи
-        if category == 'Расход':
-            amount = -amount
-        record = Record(id, date, category, amount, description).to_dict()
-        # Safe to the file
+        record = Record(id, date, category, amount, description).to_dict() 
         self.__file_handler.write_to_file(record)
     
     def get_balance(self, balance_type: str):
@@ -20,11 +18,12 @@ class RecordsData():
         records = json_data['records']
    
         if balance_type == 'total_expenses':
-            return abs(sum([record['amount'] for record in records if record['category'] == 'Расход']))
+            return abs(sum([-record['amount'] for record in records if record['category'] == 'Расход']))
         elif balance_type == 'total_income':
             return sum([record['amount'] for record in records if record['category'] == 'Доход'])
         else:
-            return sum([record['amount'] for record in records])
+            # Если категория `Расход` то меняем знак `суммы` на минус
+            return sum([-record['amount'] if record['category'] == 'Расход' else record['amount'] for record in records])
 
     def get_all_records(self):
         return self.__file_handler.read_file()['records']
@@ -52,3 +51,8 @@ class RecordsData():
         records = self.__file_handler.read_file()['records']
         return list(filter(lambda record: search_condition in record.values(), records))
 
+
+if __name__ == '__main__':
+    r = RecordsData()
+    if not r.get_all_records():
+        print('None')
