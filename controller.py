@@ -1,6 +1,7 @@
 from model import Record
 from file_handler import FileHandler
 
+
 class RecordsData():
     '''Класс `controller` для обработки данных из файла'''
     def __init__(self) -> None:
@@ -10,12 +11,15 @@ class RecordsData():
         '''Метод создает новую запись'''
         id = len(self.__file_handler.read_file()['records']) + 1 # Создаем номер записи
         record = Record(id, date, category, amount, description).to_dict() 
-        self.__file_handler.write_to_file(record)
+        try:
+            self.__file_handler.write_to_file(record)
+            return True
+        except:
+            return False
     
     def get_balance(self, balance_type: str):
         '''Возвращает баланс в зависимосит от выбранного типа баланса'''
-        json_data = self.__file_handler.read_file()
-        records = json_data['records']
+        records = self.__file_handler.read_file()['records']
    
         if balance_type == 'total_expenses':
             return abs(sum([-record['amount'] for record in records if record['category'] == 'Расход']))
@@ -46,6 +50,7 @@ class RecordsData():
                 records.pop(entry_index)                        # delete old record
                 records.insert(entry_index, record)             # insert new record
         self.__file_handler.update_file({'records': records})   # rewrite file
+        return True
 
     def search_by(self, search_condition: str | int):
         records = self.__file_handler.read_file()['records']

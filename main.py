@@ -1,5 +1,7 @@
 from controller import RecordsData
 from validators import Validator
+
+
 class MainApp():
     '''View'''
     def __init__(self) -> None:
