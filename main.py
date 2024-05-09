@@ -15,7 +15,7 @@ class MainApp():
     validator: Validator
         Используется для валидации введенных данных пользователем
     '''
-    
+
     def __init__(self) -> None:
         self.records = RecordsData()
         self.separator = '-' * 25
@@ -37,7 +37,8 @@ class MainApp():
         Медот для отображения выбранного типа баланса
         В зависимости от выбора пользователем
         balance_type: str 
-            присваивается выбранное значиние и вызывется метод контролллера `records` get_balance 
+            присваивается выбранное значиние и вызывется метод контролллера `records` get_balance
+            далее данные выводятся на экран
         '''
         print('1. Общий баланс')
         print('2. Расходы')
@@ -168,7 +169,7 @@ class MainApp():
         print('Добро пожаловать!')
         print(self.separator)
         while True:
-            self.validator.clear_errors()
+            self.validator.clear_errors() # Обнуляем ошибки
             self.help()
             command = input('Выберите команду: ')
             print()
