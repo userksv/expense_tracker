@@ -1,0 +1,46 @@
+{
+  "records": [
+    {
+      "id": 1,
+      "date": "2024-10-10",
+      "category": "Доход",
+      "amount": 3000,
+      "description": "Бонус"
+    },
+    {
+      "id": 2,
+      "date": "2024-05-05",
+      "category": "Расход",
+      "amount": 500,
+      "description": "Еда"
+    },
+    {
+      "id": 3,
+      "date": "2024-03-03",
+      "category": "Расход",
+      "amount": 350,
+      "description": "Покупка продуктов"
+    },
+    {
+      "id": 4,
+      "date": "2024-05-08",
+      "category": "Доход",
+      "amount": 100,
+      "description": "Продажа товаров"
+    },
+    {
+      "id": 5,
+      "date": "2024-05-01",
+      "category": "Расход",
+      "amount": 3000,
+      "description": "Food"
+    },
+    {
+      "id": 6,
+      "date": "2024-05-05",
+      "category": "Доход",
+      "amount": 5000,
+      "description": "Зарплата"
+    }
+  ]
+}

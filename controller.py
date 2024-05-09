@@ -13,7 +13,7 @@ class RecordsData():
     '''
     def __init__(self) -> None:
         # Инициализируем переменную и создаем файл если не существует
-        self.__file_handler = FileHandler('data.json') 
+        self.__file_handler = FileHandler('records.json') 
     
     def add_record(self, date: str, category: str, amount: int, description: str):
         '''Метод создает новую запись'''

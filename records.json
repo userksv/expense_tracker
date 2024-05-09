@@ -1,0 +1,18 @@
+{
+  "records": [
+    {
+      "id": 1,
+      "date": "2024-05-03",
+      "category": "Расход",
+      "amount": 500,
+      "description": "Покупка продуктов"
+    },
+    {
+      "id": 2,
+      "date": "2024-05-03",
+      "category": "Доход",
+      "amount": 3000,
+      "description": "Зарплата"
+    }
+  ]
+}
