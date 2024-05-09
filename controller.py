@@ -3,14 +3,22 @@ from file_handler import FileHandler
 
 
 class RecordsData():
-    '''Класс `controller` для обработки данных из файла'''
+    '''
+    Класс `controller` для обработки данных из файла
+
+    Переменные 
+    --------------------
+    __file_handler: FileHandler
+        Для доступа к файлу
+    '''
     def __init__(self) -> None:
-        self.__file_handler = FileHandler('data.json')
+        # Инициализируем переменную и создаем файл если не существует
+        self.__file_handler = FileHandler('data.json') 
     
     def add_record(self, date: str, category: str, amount: int, description: str):
         '''Метод создает новую запись'''
         id = len(self.__file_handler.read_file()['records']) + 1 # Создаем номер записи
-        record = Record(id, date, category, amount, description).to_dict() 
+        record = Record(id, date, category, amount, description).to_dict()
         try:
             self.__file_handler.write_to_file(record)
             return True
@@ -39,6 +47,9 @@ class RecordsData():
                 return record
 
     def edit_record(self, record: object, date: str, category: str, amount: int, description: str):
+        '''
+        Метод для редактирования записи. Запись редактируется полностью и обновляется файл
+        '''
         record['date'] = date
         record['category'] = category
         record['amount'] = amount
@@ -46,18 +57,16 @@ class RecordsData():
         records = self.__file_handler.read_file()['records']
         for entry in records:
             if entry['id'] == record['id']:
-                entry_index = records.index(entry)              # index of record which will be updated
-                records.pop(entry_index)                        # delete old record
-                records.insert(entry_index, record)             # insert new record
-        self.__file_handler.update_file({'records': records})   # rewrite file
+                entry_index = records.index(entry)              # находим индекс записи
+                records.pop(entry_index)                        # Удаляем старую запись
+                records.insert(entry_index, record)             # Вставлем новую запись по индексу удаленной записи
+        self.__file_handler.update_file({'records': records})   
         return True
 
     def search_by(self, search_condition: str | int):
+        '''
+        Метод для поиска записей по переданному параметру
+        Используется list comprehension
+        '''
         records = self.__file_handler.read_file()['records']
         return list(filter(lambda record: search_condition in record.values(), records))
-
-
-if __name__ == '__main__':
-    r = RecordsData()
-    if not r.get_all_records():
-        print('None')

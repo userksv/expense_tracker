@@ -1,3 +1,4 @@
+# для тестирования mock
 from unittest.mock import MagicMock
 
 class ProductionClass:

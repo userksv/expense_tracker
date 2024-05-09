@@ -3,13 +3,26 @@ from validators import Validator
 
 
 class MainApp():
-    '''View'''
+    '''
+    Класс `View` консольный интерфейс приложения, вывод информации на экран
+
+    Переменные
+    --------------------
+    records: RecordsData
+        Исполозуется для доступа к контроллеру 
+    separator: str
+        Печать линни
+    validator: Validator
+        Используется для валидации введенных данных пользователем
+    '''
+    
     def __init__(self) -> None:
         self.records = RecordsData()
         self.separator = '-' * 25
         self.validator = Validator()
 
     def help(self):
+        '''Метод для отображения основного меню приложения'''
         print('Главное меню')
         print('1. Текущий баланс')
         print('2. Добавить запись')
@@ -20,6 +33,12 @@ class MainApp():
         print(self.separator)
     
     def print_balance(self):
+        '''
+        Медот для отображения выбранного типа баланса
+        В зависимости от выбора пользователем
+        balance_type: str 
+            присваивается выбранное значиние и вызывется метод контролллера `records` get_balance 
+        '''
         print('1. Общий баланс')
         print('2. Расходы')
         print('3. Доходы')
@@ -42,6 +61,10 @@ class MainApp():
         print(self.separator)
     
     def add_record(self):
+        '''
+        Медот добавлет запись.
+        Если введные данные пользователем валидны. вызывается метод котероллера `records` add_record
+        '''
         date = input('Введите дату(Год-Месяц-День): ')
         category = input('Введите категорию(Доход/Расход): ')
         amount = input('Введите сумму(Целое число): ')
@@ -55,6 +78,7 @@ class MainApp():
             return
 
     def print_errors(self, errors: list):
+        '''Вывод ошибок на экран'''
         print(self.separator)
         print('Ошибки при вводе данных.')
         print(self.separator)
@@ -63,9 +87,11 @@ class MainApp():
         print()
 
     def get_all_records(self):
+        '''Получение всех записей'''
         return self.records.get_all_records()
     
     def print_records(self, records: list):
+        '''Вывод записей на экран'''
         if not records:
             print('Нет записей.')
             print(self.separator)
@@ -74,17 +100,22 @@ class MainApp():
             print('Найденые записи:')
             print(self.separator)
             for record in records:
+                # Формируем строку для выводв
                 print(f"Номер записи: {record['id']}\nДата: {record['date']}\nКатегория: {record['category']}\nСумма: {record['amount']}\nОписание: {record['description']}")
                 print(self.separator)
     
     def edit_record(self):
+        '''
+        Метод для редактирования записи
+        Если запись найдена и введеные данные валидны, то вызывется метод контроллера `records` edit_record
+        '''
         try:
             record_number = int(input('Введите номер записи для редактирования: '))
         except ValueError:
             print('Номер должен быть целое число')
             print(self.separator)
             return
-        
+        # Поиск записи
         record = self.records.find_record_by_id(record_number)
         if not record:
             print('Запись не найдена')
@@ -95,6 +126,7 @@ class MainApp():
             category = input('Введите категорию(Доход/Расход): ')
             amount = input('Введите сумму(Целое число): ')
             description = input('Введите описание: ')
+            
             if self.validator.validate_data(date, amount, category):
                 self.records.edit_record(record, date, category, int(amount), description)
                 print('Изменения сохранены!')
@@ -104,6 +136,10 @@ class MainApp():
                 return
 
     def search(self):
+        '''
+        Метод для поиска записи от выбранного параметра
+        Если введеные данные валидны, вызывается метод контроллера `records` serach_by
+        '''
         print('1. Поиск по дате')
         print('2. Поиск по категории')
         print('3. Поиск по сумме')
@@ -128,6 +164,7 @@ class MainApp():
             self.print_errors(self.validator.errors())
 
     def run(self):
+        '''Запуск приложения'''
         print('Добро пожаловать!')
         print(self.separator)
         while True:

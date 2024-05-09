@@ -29,8 +29,10 @@ class TestRecordController(unittest.TestCase):
                 {'category': 'Доход', 'amount': 30},
             ]
         }
+
         records_data = RecordsData()
         records_data._RecordsData__file_handler = mock_file_handler  # Injecting the mock file handler
+
         balance = records_data.get_balance('total_expenses')
         self.assertEqual(balance, 30)  # Sum of absolute values of 'Расход' category
     
@@ -44,8 +46,10 @@ class TestRecordController(unittest.TestCase):
                 {'category': 'Доход', 'amount': 30},
             ]
         }
+
         records_data = RecordsData()
         records_data._RecordsData__file_handler = mock_file_handler  # Injecting the mock file handler
+        
         balance = records_data.get_balance('total_income')
         self.assertEqual(balance, 30)  # Sum of absolute values of 'Расход' category
     
@@ -59,8 +63,10 @@ class TestRecordController(unittest.TestCase):
                 {'category': 'Доход', 'amount': 30},
             ]
         }
+        
         records_data = RecordsData()
         records_data._RecordsData__file_handler = mock_file_handler  # Injecting the mock file handler
+        
         balance = records_data.get_balance('total')
         self.assertEqual(balance, 0)  # Sum of absolute values of 'Расход' category
 

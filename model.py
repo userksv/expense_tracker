@@ -1,5 +1,25 @@
 class Record():
-    '''Класс Модель'''
+    '''
+    Класс `Модель` для создания записи
+
+    Переменные 
+    --------------------
+    __id: int
+        Используется для номера записи
+    __date: str
+        Дата записи
+    __category: str
+        Категоря Расход\Доход 
+    __amount: int
+        Сумма
+    description: str
+        Краткое описание
+
+    Методы:
+    --------------------
+    to_dict()
+        Конвертирует объект в словарь
+    '''
     def __init__(self, id: int, date: str, category: str, amount: int, description: str) -> None:
         self.__id = id
         self.__date = date
