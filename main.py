@@ -111,7 +111,8 @@ class MainApp():
         Если запись найдена и введеные данные валидны, то вызывется метод контроллера `records` edit_record
         '''
         try:
-            record_number = int(input('Введите номер записи для редактирования: '))
+            record_number = int(input('Введите номер записи для редактирования\n(номер записи можно найти путем просмотра всех записей): '))
+            print()
         except ValueError:
             print('Номер должен быть целое число')
             print(self.separator)
