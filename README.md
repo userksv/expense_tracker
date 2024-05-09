@@ -127,3 +127,4 @@
     -------------------------
     Выберите команду: 
 
+<small>This text will appear smaller</small>
